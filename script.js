@@ -7,9 +7,11 @@ const radioButtons = document.querySelectorAll('input[name="game-level"]')
 const radioBeginner = document.getElementById('beg')
 
 const TEST_BOARD_SIZE = 3
-// const TEST_MINE_POSITIONS = [{ x: 1, y: 1 }]
+const TEST_MINE_POSITIONS = [{ x: 1, y: 1 }]
+const TEST_NUMBER_OF_MINES = 1
 
 let board
+let numberOfMines
 
 if (document.readyState == 'loading') {
   document.addEventListener('DOMContentLoaded', ready)
@@ -17,16 +19,18 @@ if (document.readyState == 'loading') {
   //   const [boardSize, numberOfMines] = radioBeginner.value.split('-')
   //   boardElement.style.setProperty('--size', boardSize)
   boardElement.style.setProperty('--size', TEST_BOARD_SIZE)
-  board = createBoard(TEST_BOARD_SIZE)
-  console.log(board)
+  board = createBoard(TEST_BOARD_SIZE, TEST_MINE_POSITIONS)
+  numberOfMines = TEST_NUMBER_OF_MINES
   renderBoard()
 }
 
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('change', (e) => {
-    const [boardSize, numberOfMines] = e.target.value.split('-')
-    board = createBoard(boardSize)
+    const [boardSize, mineCount] = e.target.value.split('-')
+    board = createBoard(boardSize, getMinePositions(boardSize))
+    numberOfMines = mineCount
     boardElement.style.setProperty('--size', boardSize)
+    console.log(board)
     renderBoard()
   })
 }
@@ -60,5 +64,26 @@ function tileToElement(tile) {
 }
 
 function listMinesLeft() {
-  minesLeftText.textContent = 'TODO'
+  minesLeftText.textContent = numberOfMines
+}
+
+function getMinePositions(boardSize) {
+  const minePositions = []
+
+  while (minePositions.length < numberOfMines) {
+    const minePosition = {
+      x: randomNum(boardSize),
+      y: randomNum(boardSize),
+    }
+
+    if (!minePositions.some((p) => isPositionMatch(p, minePosition))) {
+      minePositions.push(minePosition)
+    }
+  }
+
+  return minePositions
+}
+
+function randomNum(size) {
+  return Math.floor(Math.random() * size)
 }

@@ -7,7 +7,7 @@ export const TILE_STATUSES = {
   MARKED: 'marked',
 }
 
-export function createBoard(boardSize) {
+export function createBoard(boardSize, minePositions) {
   return times((x) => {
     return times((y) => {
       return {
@@ -15,7 +15,7 @@ export function createBoard(boardSize) {
         y,
         status: TILE_STATUSES.HIDDEN,
         // mine: minePositions.some(positionMatch.bind(null, { x, y })),
-        // mine: minePositions.some((p) => isPositionMatch(p, { x, y })),
+        mine: minePositions.some((p) => isPositionMatch(p, { x, y })),
       }
     }, boardSize)
   }, boardSize)
