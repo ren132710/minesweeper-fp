@@ -1,4 +1,12 @@
-import { TILE_STATUSES, createBoard, isPositionMatch } from './minesweeper.js'
+import {
+  TILE_STATUSES,
+  createBoard,
+  isPositionMatch,
+  markTile,
+  revealTile,
+  hasPlayerWon,
+  hasPlayerLost,
+} from './minesweeper.js'
 
 const boardElement = document.querySelector('.board')
 const minesLeftText = document.querySelector('[data-mine-count]')
@@ -16,11 +24,12 @@ let numberOfMines
 if (document.readyState == 'loading') {
   document.addEventListener('DOMContentLoaded', ready)
 } else {
-  //   const [boardSize, numberOfMines] = radioBeginner.value.split('-')
-  //   boardElement.style.setProperty('--size', boardSize)
+  // const [boardSize, numberOfMines] = radioBeginner.value.split('-')
+  // boardElement.style.setProperty('--size', boardSize)
   boardElement.style.setProperty('--size', TEST_BOARD_SIZE)
   board = createBoard(TEST_BOARD_SIZE, TEST_MINE_POSITIONS)
   numberOfMines = TEST_NUMBER_OF_MINES
+  console.log(board)
   renderBoard()
 }
 
@@ -30,20 +39,65 @@ for (const radioButton of radioButtons) {
     board = createBoard(boardSize, getMinePositions(boardSize))
     numberOfMines = mineCount
     boardElement.style.setProperty('--size', boardSize)
-    console.log(board)
+
     renderBoard()
   })
 }
 
+boardElement.addEventListener('click', (e) => {
+  if (!e.target.matches('[data-status')) return
+
+  board = revealTile(board, {
+    x: parseInt(e.target.dataset.x),
+    y: parseInt(e.target.dataset.y),
+  })
+  renderBoard()
+})
+
+boardElement.addEventListener('contextmenu', (e) => {
+  if (!e.target.matches('[data-status')) return
+  e.preventDefault()
+
+  board = markTile(board, {
+    x: parseInt(e.target.dataset.x),
+    y: parseInt(e.target.dataset.y),
+  })
+  renderBoard()
+})
+
 function renderBoard() {
   boardElement.innerHTML = ''
+  // isGameOver()
 
   getTileElements().forEach((element) => {
     boardElement.append(element)
   })
-
+  console.log(board)
   listMinesLeft()
 }
+
+// function isGameOver() {
+//   // const win = hasPlayerWon(board)
+//   const lose = hasPlayerLost(board)
+
+//   if (win || lose) {
+//     boardElement.addEventListener('click', stopProp, { capture: true })
+//     boardElement.addEventListener('contextmenu', stopProp, { capture: true })
+//   }
+
+//   if (win) {
+//     messageText.textContent = 'You Win'
+//   }
+//   if (lose) {
+//     messageText.textContent = 'You Lose'
+//     board.forEach((row) => {
+//       row.forEach((tile) => {
+//         if (tile.status === TILE_STATUSES.MARKED) markTile(tile)
+//         if (tile.mine) revealTile(board, tile)
+//       })
+//     })
+//   }
+// }
 
 function getTileElements() {
   return board
@@ -80,7 +134,6 @@ function getMinePositions(boardSize) {
       minePositions.push(minePosition)
     }
   }
-
   return minePositions
 }
 
