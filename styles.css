@@ -19,7 +19,8 @@ body {
 
 .level {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  align-items: space-around;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 6px;
@@ -40,10 +41,10 @@ body {
 }
 
 .board {
-  display: grid;
+  display: inline-grid;
   padding: 6px;
-  grid-template-columns: repeat(var(--size), 33px);
-  grid-template-rows: repeat(var(--size), 33px);
+  grid-template-columns: repeat(var(--size), 60px);
+  grid-template-rows: repeat(var(--size), 60px);
   gap: 4px;
   background-color: #777;
 }
