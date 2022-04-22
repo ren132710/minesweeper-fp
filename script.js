@@ -16,6 +16,7 @@ const radioBeginner = document.getElementById('beg')
 
 const TEST_BOARD_SIZE = 3
 const TEST_MINE_POSITIONS = [{ x: 1, y: 1 }]
+// const TEST_MINE_POSITIONS = null
 const TEST_NUMBER_OF_MINES = 1
 
 let board
@@ -35,9 +36,13 @@ if (document.readyState == 'loading') {
 
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('change', (e) => {
+    //reset board
+    boardElement.removeEventListener('click', stopProp, { capture: true })
+    boardElement.removeEventListener('contextmenu', stopProp, { capture: true })
     const [boardSize, mineCount] = e.target.value.split('-')
-    board = createBoard(boardSize, getMinePositions(boardSize))
     numberOfMines = mineCount
+
+    board = createBoard(boardSize, getMinePositions(boardSize))
     boardElement.style.setProperty('--size', boardSize)
 
     renderBoard()
@@ -51,6 +56,8 @@ boardElement.addEventListener('click', (e) => {
     x: parseInt(e.target.dataset.x),
     y: parseInt(e.target.dataset.y),
   })
+
+  console.log(board)
   renderBoard()
 })
 
@@ -67,37 +74,38 @@ boardElement.addEventListener('contextmenu', (e) => {
 
 function renderBoard() {
   boardElement.innerHTML = ''
-  // isGameOver()
+  isGameOver()
 
   getTileElements().forEach((element) => {
     boardElement.append(element)
   })
-  console.log(board)
+
   listMinesLeft()
 }
 
-// function isGameOver() {
-//   // const win = hasPlayerWon(board)
-//   const lose = hasPlayerLost(board)
+function isGameOver() {
+  // const win = hasPlayerWon(board)
+  const lose = hasPlayerLost(board)
 
-//   if (win || lose) {
-//     boardElement.addEventListener('click', stopProp, { capture: true })
-//     boardElement.addEventListener('contextmenu', stopProp, { capture: true })
-//   }
+  // if (win || lose) {
+  if (lose) {
+    boardElement.addEventListener('click', stopProp, { capture: true })
+    boardElement.addEventListener('contextmenu', stopProp, { capture: true })
+  }
 
-//   if (win) {
-//     messageText.textContent = 'You Win'
-//   }
-//   if (lose) {
-//     messageText.textContent = 'You Lose'
-//     board.forEach((row) => {
-//       row.forEach((tile) => {
-//         if (tile.status === TILE_STATUSES.MARKED) markTile(tile)
-//         if (tile.mine) revealTile(board, tile)
-//       })
-//     })
-//   }
-// }
+  // if (win) {
+  //   messageText.textContent = 'You Win'
+  // }
+  if (lose) {
+    messageText.textContent = 'You Lose'
+    board.forEach((row) => {
+      row.forEach((tile) => {
+        if (tile.status === TILE_STATUSES.MARKED) markTile(tile)
+        if (tile.mine) revealTile(board, tile)
+      })
+    })
+  }
+}
 
 function getTileElements() {
   return board
@@ -114,6 +122,7 @@ function tileToElement(tile) {
   element.dataset.status = tile.status
   element.dataset.x = tile.x
   element.dataset.y = tile.y
+  element.textContent = tile.adjacentMinesCount || ''
   return element
 }
 
@@ -139,4 +148,8 @@ function getMinePositions(boardSize) {
 
 function randomNum(size) {
   return Math.floor(Math.random() * size)
+}
+
+function stopProp(e) {
+  e.stopImmediatePropagation()
 }

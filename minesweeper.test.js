@@ -144,8 +144,8 @@ describe('#revealTile', () => {
         { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
       ],
       [
-        { x: 1, y: 0, status: TILE_STATUSES.MARKED, mine: false },
-        { x: 1, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
       ],
     ]
     describe('if tile is a mine', () => {
@@ -156,8 +156,8 @@ describe('#revealTile', () => {
             { x: 0, y: 1, status: TILE_STATUSES.MINE, mine: true },
           ],
           [
-            { x: 1, y: 0, status: TILE_STATUSES.MARKED, mine: false },
-            { x: 1, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+            { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
           ],
         ]
         expect(revealTile(board, { x: 0, y: 1 })).toEqual(expectedBoard)
@@ -165,12 +165,22 @@ describe('#revealTile', () => {
       })
     })
 
-    describe *
-      ('it tile is not a mine',
-      () => {
-        test('if tile is adjacent to a mine, should display the number of nearby mines and set tile status to number', () => {})
-        test('if tile is not adjacent to a mine, should reveal nearby tiles and set tile status to number', () => {})
+    describe('if tile is not a mine', () => {
+      test('if tile is adjacent to a mine, should count the number of nearby mines and set tile status to number', () => {
+        const expectedBoard = [
+          [
+            { x: 0, y: 0, status: TILE_STATUSES.NUMBER, mine: false, adjacentMinesCount: 1 },
+            { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+          ],
+          [
+            { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+          ],
+        ]
+        expect(revealTile(board, { x: 0, y: 0 })).toEqual(expectedBoard)
       })
+      test * ('if tile is not adjacent to a mine, should reveal nearby tiles and set tile status to number', () => {})
+    })
   })
   describe *
     ('if tile is not hidden',

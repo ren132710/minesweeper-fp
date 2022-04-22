@@ -1,4 +1,4 @@
-import { times } from 'lodash/fp'
+import { times, range } from 'lodash/fp'
 
 export const TILE_STATUSES = {
   HIDDEN: 'hidden',
@@ -21,6 +21,41 @@ export function createBoard(boardSize, minePositions) {
   }, boardSize)
 }
 
+export function revealTile(board, { x, y }) {
+  const tile = board[x][y]
+
+  if (tile.status !== TILE_STATUSES.HIDDEN) return
+
+  if (tile.mine) {
+    return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MINE })
+  }
+  tile.status = TILE_STATUSES.NUMBER
+  const adjacentTiles = nearbyTiles(board, tile)
+  const adjacentMines = adjacentTiles.filter((tile) => tile.mine === true)
+
+  const newBoard = replaceTile(
+    board,
+    { x, y },
+    { ...tile, status: TILE_STATUSES.NUMBER, adjacentMinesCount: adjacentMines.length }
+  )
+
+  return newBoard
+}
+
+function nearbyTiles(board, { x, y }) {
+  //iterate over -1, 0, 1
+  const offsets = range(-1, 2)
+
+  return offsets
+    .map((xOffset) => {
+      return offsets.map((yOffset) => {
+        return board[x + xOffset]?.[y + yOffset]
+      })
+    })
+    .flat()
+    .filter((tile) => tile != null)
+}
+
 export function markTile(board, { x, y }) {
   const tile = board[x][y]
 
@@ -33,14 +68,6 @@ export function markTile(board, { x, y }) {
 
   if (tile.status === TILE_STATUSES.MARKED) {
     return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.HIDDEN })
-  }
-}
-
-export function revealTile(board, { x, y }) {
-  const tile = board[x][y]
-
-  if (tile.mine) {
-    return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MINE })
   }
 }
 
@@ -59,16 +86,16 @@ export function isPositionMatch(a, b) {
   return a.x === b.x && a.y === b.y
 }
 
-// export function hasPlayerWon(board) {
-//   return board.every((row) => {
-//     return row.every((tile) => {
-//       return (
-//         tile.status === TILE_STATUSES.NUMBER ||
-//         (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED))
-//       )
-//     })
-//   })
-// }
+export function hasPlayerWon(board) {
+  return board.every((row) => {
+    return row.every((tile) => {
+      return (
+        tile.status === TILE_STATUSES.NUMBER ||
+        (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED))
+      )
+    })
+  })
+}
 
 export function hasPlayerLost(board) {
   return board.some((row) => {
