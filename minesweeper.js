@@ -24,12 +24,12 @@ export function createBoard(boardSize, minePositions) {
 export function revealTile(board, { x, y }) {
   const tile = board[x][y]
 
-  if (tile.status !== TILE_STATUSES.HIDDEN) return
+  if (tile.status !== TILE_STATUSES.HIDDEN) return board
 
   if (tile.mine) {
     return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MINE })
   }
-  tile.status = TILE_STATUSES.NUMBER
+
   const adjacentTiles = nearbyTiles(board, tile)
   const adjacentMines = adjacentTiles.filter((tile) => tile.mine === true)
 
@@ -38,6 +38,12 @@ export function revealTile(board, { x, y }) {
     { x, y },
     { ...tile, status: TILE_STATUSES.NUMBER, adjacentMinesCount: adjacentMines.length }
   )
+
+  if (adjacentMines.length === 0) {
+    return adjacentTiles.reduce((board, tile) => {
+      return revealTile(board, tile)
+    }, newBoard)
+  }
 
   return newBoard
 }

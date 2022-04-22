@@ -179,9 +179,95 @@ describe('#revealTile', () => {
         ]
         expect(revealTile(board, { x: 0, y: 0 })).toEqual(expectedBoard)
       })
-      test * ('if tile is not adjacent to a mine, should reveal nearby tiles and set tile status to number', () => {})
+      test('if tile is not adjacent to a mine, should reveal nearby tiles and set tile status to number', () => {
+        const board = [
+          [
+            { x: 0, y: 0, status: TILE_STATUSES.HIDDEN, mine: true },
+            { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 0, y: 2, status: TILE_STATUSES.HIDDEN, mine: false },
+          ],
+          [
+            { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 1, y: 2, status: TILE_STATUSES.HIDDEN, mine: false },
+          ],
+          [
+            { x: 2, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 2, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+            { x: 2, y: 2, status: TILE_STATUSES.HIDDEN, mine: false },
+          ],
+        ]
+
+        const expectedBoard = [
+          [
+            { x: 0, y: 0, status: TILE_STATUSES.HIDDEN, mine: true },
+            {
+              x: 0,
+              y: 1,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 1,
+            },
+            {
+              x: 0,
+              y: 2,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 0,
+            },
+          ],
+          [
+            {
+              x: 1,
+              y: 0,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 1,
+            },
+            {
+              x: 1,
+              y: 1,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 1,
+            },
+            {
+              x: 1,
+              y: 2,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 0,
+            },
+          ],
+          [
+            {
+              x: 2,
+              y: 0,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 0,
+            },
+            {
+              x: 2,
+              y: 1,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 0,
+            },
+            {
+              x: 2,
+              y: 2,
+              status: TILE_STATUSES.NUMBER,
+              mine: false,
+              adjacentMinesCount: 0,
+            },
+          ],
+        ]
+        expect(revealTile(board, { x: 2, y: 2 })).toEqual(expectedBoard)
+      })
     })
   })
+
   describe *
     ('if tile is not hidden',
     () => {

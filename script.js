@@ -15,7 +15,7 @@ const radioButtons = document.querySelectorAll('input[name="game-level"]')
 const radioBeginner = document.getElementById('beg')
 
 const TEST_BOARD_SIZE = 3
-const TEST_MINE_POSITIONS = [{ x: 1, y: 1 }]
+const TEST_MINE_POSITIONS = [{ x: 0, y: 0 }]
 // const TEST_MINE_POSITIONS = null
 const TEST_NUMBER_OF_MINES = 1
 
