@@ -7,8 +7,8 @@
     "start": "parcel index.html",
     "build": "parcel build index.html",
     "test": "jest --coverage",
-    "cy:open": "cypress open",
-    "test:e2e": "start-server-and-test start http://localhost:1234 cy:open"
+    "cy-open": "cypress open",
+    "test-e2e": "start-server-and-test start http://localhost:1234 cy-open"
   },
   "repository": {
     "type": "git",
