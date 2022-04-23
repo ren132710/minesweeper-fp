@@ -268,12 +268,56 @@ describe('#revealTile', () => {
     })
   })
 
-  describe *
-    ('if tile is not hidden',
-    () => {
-      test('if tile status is marked, should do nothing', () => {})
-      test('if tile status is number, should do nothing', () => {})
+  describe('if tile is not hidden', () => {
+    test('if tile status is marked, should do nothing', () => {
+      const board = [
+        [
+          { x: 0, y: 0, status: TILE_STATUSES.MARKED, mine: false },
+          { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        ],
+        [
+          { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+          { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        ],
+      ]
+
+      const expectedBoard = [
+        [
+          { x: 0, y: 0, status: TILE_STATUSES.MARKED, mine: false },
+          { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        ],
+        [
+          { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+          { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        ],
+      ]
+      expect(revealTile(board, { x: 0, y: 0 })).toEqual(expectedBoard)
     })
+    test('if tile status is number, should do nothing', () => {
+      const board = [
+        [
+          { x: 0, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+          { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        ],
+        [
+          { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+          { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        ],
+      ]
+
+      const expectedBoard = [
+        [
+          { x: 0, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+          { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        ],
+        [
+          { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+          { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        ],
+      ]
+      expect(revealTile(board, { x: 0, y: 0 })).toEqual(expectedBoard)
+    })
+  })
 })
 
 describe('#isPositionMatch', () => {

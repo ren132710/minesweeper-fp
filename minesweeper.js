@@ -63,6 +63,7 @@ function nearbyTiles(board, { x, y }) {
 }
 
 export function markTile(board, { x, y }) {
+  //const newBoard = [...board]
   const tile = board[x][y]
 
   if (tile.status === TILE_STATUSES.NUMBER) return board
