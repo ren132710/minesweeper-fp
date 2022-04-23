@@ -28,6 +28,7 @@ let numberOfMines
 if (document.readyState == 'loading') {
   document.addEventListener('DOMContentLoaded', ready)
 } else {
+  //radioBeginner.checked = true | false
   // const [boardSize, numberOfMines] = radioBeginner.value.split('-')
   // boardElement.style.setProperty('--size', boardSize)
   boardElement.style.setProperty('--size', TEST_BOARD_SIZE)
