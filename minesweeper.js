@@ -63,18 +63,19 @@ function nearbyTiles(board, { x, y }) {
 }
 
 export function markTile(board, { x, y }) {
-  //const newBoard = [...board]
-  const tile = board[x][y]
+  //TODO: Is it fp overkill to clone the board?
+  const newBoard = [...board]
+  const tile = newBoard[x][y]
 
-  if (tile.status === TILE_STATUSES.NUMBER) return board
-  if (tile.status === TILE_STATUSES.MINE) return board
+  if (tile.status === TILE_STATUSES.NUMBER) return newBoard
+  if (tile.status === TILE_STATUSES.MINE) return newBoard
 
   if (tile.status === TILE_STATUSES.HIDDEN) {
-    return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MARKED })
+    return replaceTile(newBoard, { x, y }, { ...tile, status: TILE_STATUSES.MARKED })
   }
 
   if (tile.status === TILE_STATUSES.MARKED) {
-    return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.HIDDEN })
+    return replaceTile(newBoard, { x, y }, { ...tile, status: TILE_STATUSES.HIDDEN })
   }
 }
 
@@ -110,4 +111,16 @@ export function hasPlayerLost(board) {
       return tile.status === TILE_STATUSES.MINE
     })
   })
+}
+
+export function markedTilesCount(board) {
+  let count = 0
+  board.forEach((row) => {
+    row.forEach((tile) => {
+      if (tile.status === TILE_STATUSES.MARKED) {
+        count = count + 1
+      }
+    })
+  })
+  return count
 }

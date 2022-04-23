@@ -6,6 +6,7 @@ import {
   revealTile,
   hasPlayerWon,
   hasPlayerLost,
+  markedTilesCount,
 } from './minesweeper'
 
 describe('#createBoard', () => {
@@ -405,5 +406,49 @@ describe('#hasPlayerWon', () => {
       ],
     ]
     expect(hasPlayerWon(board)).toBeFalsy()
+  })
+})
+
+describe('#markedTilesCount', () => {
+  test('should return the number of marked tiles on a board', () => {
+    const board = [
+      [
+        { x: 0, y: 0, status: TILE_STATUSES.HIDDEN, mine: true },
+        { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 0, y: 2, status: TILE_STATUSES.HIDDEN, mine: false },
+      ],
+      [
+        { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 1, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 2, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 2, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 2, y: 2, status: TILE_STATUSES.MARKED, mine: true },
+      ],
+    ]
+    expect(markedTilesCount(board)).toBe(1)
+  })
+
+  test('should return 0 if no tiles are marked', () => {
+    const board = [
+      [
+        { x: 0, y: 0, status: TILE_STATUSES.HIDDEN, mine: true },
+        { x: 0, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 0, y: 2, status: TILE_STATUSES.HIDDEN, mine: false },
+      ],
+      [
+        { x: 1, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 1, y: 1, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 1, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 2, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 2, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 2, y: 2, status: TILE_STATUSES.HIDDEN, mine: true },
+      ],
+    ]
+    expect(markedTilesCount(board)).toBe(0)
   })
 })
