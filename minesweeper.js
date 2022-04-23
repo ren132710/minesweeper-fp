@@ -114,13 +114,8 @@ export function hasPlayerLost(board) {
 }
 
 export function markedTilesCount(board) {
-  let count = 0
-  board.forEach((row) => {
-    row.forEach((tile) => {
-      if (tile.status === TILE_STATUSES.MARKED) {
-        count = count + 1
-      }
-    })
-  })
-  return count
+  //reduce() and filter() are more efficient than forEach()
+  return board.reduce((count, row) => {
+    return count + row.filter((tile) => tile.status === TILE_STATUSES.MARKED).length
+  }, 0)
 }
