@@ -363,3 +363,47 @@ describe('#hasPlayerLost', () => {
     expect(hasPlayerLost(board)).toBeFalsy()
   })
 })
+
+describe('#hasPlayerWon', () => {
+  test('should return true if every tile = Number || (tile.mine && (Hidden || Marked) ', () => {
+    const board = [
+      [
+        { x: 0, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 0, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 0, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 1, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 1, y: 1, status: TILE_STATUSES.MARKED, mine: true },
+        { x: 1, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 2, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 2, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        { x: 2, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+    ]
+    expect(hasPlayerWon(board)).toBeTruthy()
+  })
+
+  test('should return false if every tile != Number || (tile.mine && (Hidden || Marked) ', () => {
+    const board = [
+      [
+        { x: 0, y: 0, status: TILE_STATUSES.HIDDEN, mine: false },
+        { x: 0, y: 1, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 0, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 1, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 1, y: 1, status: TILE_STATUSES.MARKED, mine: true },
+        { x: 1, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+      [
+        { x: 2, y: 0, status: TILE_STATUSES.NUMBER, mine: false },
+        { x: 2, y: 1, status: TILE_STATUSES.HIDDEN, mine: true },
+        { x: 2, y: 2, status: TILE_STATUSES.NUMBER, mine: false },
+      ],
+    ]
+    expect(hasPlayerWon(board)).toBeFalsy()
+  })
+})
