@@ -43,10 +43,40 @@ body {
 .board {
   display: grid;
   padding: 6px;
-  grid-template-columns: repeat(var(--size), 60px);
-  grid-template-rows: repeat(var(--size), 60px);
-  gap: 4px;
+  grid-template-columns: repeat(var(--size), 1fr);
+  grid-template-rows: repeat(var(--size), 1fr);
+  gap: 3px;
   background-color: #777;
+  height: 800px;
+  width: 800px;
+}
+
+@media screen and (max-width: 850px) {
+  .board {
+    display: grid;
+    padding: 6px;
+    grid-template-columns: repeat(var(--size), 1fr);
+    grid-template-rows: repeat(var(--size), 1fr);
+    gap: 3px;
+    background-color: #777;
+    height: 600px;
+    width: 600px;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .board {
+    display: grid;
+    padding: 6px;
+    grid-template-columns: repeat(var(--size), 1fr);
+    grid-template-rows: repeat(var(--size), 1fr);
+    gap: 3px;
+    background-color: #777;
+    height: 400px;
+    width: 400px;
+    font-size: 1rem;
+  }
 }
 
 .board > * {
