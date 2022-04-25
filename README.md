@@ -5,3 +5,4 @@ Practice:
 - test-driven refactoring
 - jest
 - crypress, UI testing
+- css media queries
