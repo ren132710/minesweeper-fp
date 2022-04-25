@@ -9,6 +9,9 @@ import {
   markedTilesCount,
 } from './minesweeper.js'
 
+let board
+let numberOfMines
+
 const body = document.querySelector('body')
 const boardElement = document.querySelector('.board')
 const minesLeftText = document.querySelector('[data-mine-count]')
@@ -16,27 +19,16 @@ const messageText = document.querySelector('.subtext')
 const radioButtons = document.querySelectorAll('input[name="game-level"]')
 const radioBeginner = document.getElementById('beg')
 
-const TEST_BOARD_SIZE = 3
-const TEST_NUMBER_OF_MINES = 2
-const TEST_MINE_POSITIONS = [
-  { x: 0, y: 0 },
-  { x: 2, y: 2 },
-]
+//if not in production, load test board
+let testBoard
+if (process.env.NODE_ENV !== 'production' && window.testBoard) {
+  testBoard = window.testBoard
 
-let board
-let numberOfMines
+  const boardSize = testBoard.length
+  numberOfMines = testBoard.flat().filter((tile) => tile.mine).length
+  board = createBoard(boardSize, getMinePositions(boardSize))
+  boardElement.style.setProperty('--size', boardSize)
 
-if (document.readyState == 'loading') {
-  document.addEventListener('DOMContentLoaded', ready)
-} else {
-  //radioBeginner.checked = true | false
-  // const [boardSize, numberOfMines] = radioBeginner.value.split('-')
-  // boardElement.style.setProperty('--size', boardSize)
-  boardElement.style.setProperty('--size', TEST_BOARD_SIZE)
-  board = createBoard(TEST_BOARD_SIZE, TEST_MINE_POSITIONS)
-  numberOfMines = TEST_NUMBER_OF_MINES
-
-  console.log(board)
   renderBoard()
 }
 
