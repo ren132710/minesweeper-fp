@@ -43,14 +43,14 @@ if (document.readyState == 'loading') {
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('change', (e) => {
     //reset board
-    console.log(body)
-    console.log(e.target.id)
     boardElement.removeEventListener('click', stopProp, { capture: true })
     boardElement.removeEventListener('contextmenu', stopProp, { capture: true })
-    const [boardSize, mineCount] = e.target.value.split('-')
-    numberOfMines = mineCount
+
     if (e.target.id == 'int') body.style.fontSize = '2rem'
     if (e.target.id === 'adv') body.style.fontSize = '1.25rem'
+
+    const [boardSize, mineCount] = e.target.value.split('-')
+    numberOfMines = mineCount
     board = createBoard(boardSize, getMinePositions(boardSize))
     boardElement.style.setProperty('--size', boardSize)
 
