@@ -34,6 +34,7 @@ if (process.env.NODE_ENV !== 'production' && window.testBoard) {
   numberOfMines = mineCount
   board = createBoard(boardSize, getMinePositions(boardSize))
   boardElement.style.setProperty('--size', boardSize)
+
   renderBoard()
 }
 
