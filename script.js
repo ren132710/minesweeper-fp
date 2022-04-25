@@ -9,6 +9,7 @@ import {
   markedTilesCount,
 } from './minesweeper.js'
 
+const body = document.querySelector('body')
 const boardElement = document.querySelector('.board')
 const minesLeftText = document.querySelector('[data-mine-count]')
 const messageText = document.querySelector('.subtext')
@@ -42,11 +43,14 @@ if (document.readyState == 'loading') {
 for (const radioButton of radioButtons) {
   radioButton.addEventListener('change', (e) => {
     //reset board
+    console.log(body)
+    console.log(e.target.id)
     boardElement.removeEventListener('click', stopProp, { capture: true })
     boardElement.removeEventListener('contextmenu', stopProp, { capture: true })
     const [boardSize, mineCount] = e.target.value.split('-')
     numberOfMines = mineCount
-
+    if (e.target.id == 'int') body.style.fontSize = '2rem'
+    if (e.target.id === 'adv') body.style.fontSize = '1.25rem'
     board = createBoard(boardSize, getMinePositions(boardSize))
     boardElement.style.setProperty('--size', boardSize)
 
