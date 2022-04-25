@@ -22,7 +22,6 @@ const radioBeginner = document.getElementById('beg')
 //if not in production, load test board
 if (process.env.NODE_ENV !== 'production' && window.testBoard) {
   board = window.testBoard
-  console.log(board)
 
   const boardSize = board.length
   numberOfMines = board.flat().filter((tile) => tile.mine).length
