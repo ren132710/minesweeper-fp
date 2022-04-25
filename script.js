@@ -20,13 +20,12 @@ const radioButtons = document.querySelectorAll('input[name="game-level"]')
 const radioBeginner = document.getElementById('beg')
 
 //if not in production, load test board
-let testBoard
 if (process.env.NODE_ENV !== 'production' && window.testBoard) {
-  testBoard = window.testBoard
+  board = window.testBoard
+  console.log(board)
 
-  const boardSize = testBoard.length
-  numberOfMines = testBoard.flat().filter((tile) => tile.mine).length
-  board = createBoard(boardSize, getMinePositions(boardSize))
+  const boardSize = board.length
+  numberOfMines = board.flat().filter((tile) => tile.mine).length
   boardElement.style.setProperty('--size', boardSize)
 
   renderBoard()
