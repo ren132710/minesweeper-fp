@@ -19,7 +19,7 @@ const messageText = document.querySelector('.subtext')
 const radioButtons = document.querySelectorAll('input[name="game-level"]')
 const radioBeginner = document.getElementById('beg')
 
-//if not in production, load test board
+//if not production, load test board
 if (process.env.NODE_ENV !== 'production' && window.testBoard) {
   board = window.testBoard
 
@@ -27,6 +27,13 @@ if (process.env.NODE_ENV !== 'production' && window.testBoard) {
   numberOfMines = board.flat().filter((tile) => tile.mine).length
   boardElement.style.setProperty('--size', boardSize)
 
+  renderBoard()
+} else {
+  //otherwise, default to beginner level board
+  const [boardSize, mineCount] = radioBeginner.value.split('-')
+  numberOfMines = mineCount
+  board = createBoard(boardSize, getMinePositions(boardSize))
+  boardElement.style.setProperty('--size', boardSize)
   renderBoard()
 }
 
